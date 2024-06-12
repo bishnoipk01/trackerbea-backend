@@ -1,0 +1,31 @@
+{
+  "name": "trackerbea-backend",
+  "version": "1.0.0",
+  "description": "Backend API for trackerbea project",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bishnoipk01/trackerbea-backend.git"
+  },
+  "keywords": [
+    "trackerbea",
+    "habbit",
+    "task",
+    "goal",
+    "daily",
+    "streak"
+  ],
+  "author": "Pankaj Bishnoi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bishnoipk01/trackerbea-backend/issues"
+  },
+  "homepage": "https://github.com/bishnoipk01/trackerbea-backend#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
