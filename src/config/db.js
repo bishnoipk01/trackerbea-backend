@@ -6,7 +6,6 @@ let driver;
 
 // create driver instance from neo4j driver by providing databse URI and authentication
 export const initDriver = function () {
-  console.log("initDriver");
   driver = neo4j.driver(
     NEO4J_URI,
     neo4j.auth.basic(NEO4J_USERNAME, NEO4J_PASSWORD)

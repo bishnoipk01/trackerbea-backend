@@ -1,49 +1,105 @@
-import { executeRead, executeWrite } from "../config/db.js";
 import bcrypt from "bcryptjs";
+import { getUserByEmail, getUsers, createUser } from "../models/userModel.js";
+import JWT from "jsonwebtoken";
 
-export async function getAllUsers(req, res) {
-  const query = `MATCH (u:User) RETURN u`;
-  const user = await executeRead(query);
-  res.status(200).json({
-    status: "true",
-    data: user,
+import { JWT_SECRET_KEY, JWT_EXPIRATION } from "../config/vars.js";
+
+const createUserToken = (user_id) => {
+  return JWT.sign({ id: user_id }, JWT_SECRET_KEY, {
+    expiresIn: JWT_EXPIRATION,
   });
+};
+
+const verifyJWT = (token) => {
+  try {
+    const decoded = JWT.verify(token, JWT_SECRET_KEY);
+    return decoded;
+  } catch (error) {
+    throw new Error("Invalid token");
+  }
+};
+export async function getAllUsers(req, res) {
+  try {
+    const users = await getUsers();
+    console.log(users);
+    res.status(200).json({
+      status: "true",
+      data: users,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      status: "false",
+      message: error.message,
+    });
+  }
 }
 
-export async function createUser(req, res) {
-  const { name, email, password } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 12);
-  const query = `CREATE (u:User {user_id: randomUuid(), name: $name, email: $email, password: $hashedPassword}) RETURN u`;
-  const params = { name, email, hashedPassword };
-  const data = await executeWrite(query, params);
+export async function getUserById(req, res) {
+  // TODO:
+}
 
-  const user = data[0].get("u").properties;
-  res.status(200).json({
-    status: "true",
-    data: { user },
-  });
+export async function registerUser(req, res) {
+  try {
+    const { name, username, email, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const data = { name, email, username, password: hashedPassword };
+    const result = await createUser(data);
+    const user = result[0].get("u").properties;
+    const token = createUserToken(user.id);
+    res.status(200).json({
+      status: "true",
+      data: { ...user, token },
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({
+      status: "false",
+      message: e.message,
+    });
+  }
 }
 
 export async function loginUser(req, res) {
-  const { email, password } = req.body;
-  const query = `MATCH (u:User {email: $email}) RETURN u`;
-  const params = { email };
-  const data = await executeRead(query, params);
-  if (data.length == 0)
-    return res.status(200).json({
+  try {
+    const { email, password } = req.body;
+
+    const data = await getUserByEmail(email);
+    if (data.length == 0) {
+      return res.status(200).json({
+        status: "false",
+        message: "Invalid username or password",
+      });
+    }
+    const user = data[0].get("u").properties;
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(200).json({
+        status: "false",
+        message: "Invalid username or password",
+      });
+    } else
+      res.status(200).json({
+        status: "true",
+        data: { user },
+      });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({
       status: "false",
-      message: "Invalid username or password",
+      message: e.message,
     });
-  const user = data[0].get("u").properties;
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) {
-    return res.status(200).json({
-      status: "false",
-      message: "Invalid username or password",
-    });
-  } else
-    res.status(200).json({
-      status: "true",
-      data: { user },
-    });
+  }
+}
+
+export async function updateUser(req, res) {
+  // TODO:
+}
+
+export async function deleteUser(req, res) {
+  // TODO:
+}
+
+export async function resetPassword(req, res) {
+  // TODO:
 }
