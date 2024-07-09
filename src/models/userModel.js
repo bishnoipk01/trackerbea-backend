@@ -1,4 +1,4 @@
-import { executeWrite, executeRead } from "../config/db.js";
+import { executeWrite, executeRead } from '../config/db.js';
 
 export async function getUsers() {
   try {
@@ -7,6 +7,7 @@ export async function getUsers() {
     return users;
   } catch (err) {
     console.log(err);
+    return null;
   }
 }
 
@@ -18,6 +19,7 @@ export async function getUserByEmail(email) {
     return user;
   } catch (err) {
     console.log(err);
+    return null;
   }
 }
 
@@ -35,5 +37,6 @@ export async function createUser(data) {
     return user;
   } catch (err) {
     console.log(err);
+    return null;
   }
 }

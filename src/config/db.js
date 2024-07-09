@@ -1,5 +1,5 @@
-import neo4j from "neo4j-driver";
-import { NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD } from "./vars.js";
+import neo4j from 'neo4j-driver';
+import { NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD } from './vars.js';
 
 // initialize global driver variable
 let driver;
@@ -8,7 +8,7 @@ let driver;
 export const initDriver = function () {
   driver = neo4j.driver(
     NEO4J_URI,
-    neo4j.auth.basic(NEO4J_USERNAME, NEO4J_PASSWORD)
+    neo4j.auth.basic(NEO4J_USERNAME, NEO4J_PASSWORD),
   );
 };
 
@@ -17,6 +17,7 @@ initDriver();
 // function to return driver object
 export const getDriver = () => {
   if (driver) return driver;
+  return null;
 };
 
 /**
@@ -37,6 +38,7 @@ export const executeRead = async (query, params = {}) => {
     // return data received from database
     return res.records;
   } catch (err) {
+    // TODO: implement a better error handling
     console.log(err);
     throw err;
   }

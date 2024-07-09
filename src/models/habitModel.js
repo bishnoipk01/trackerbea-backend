@@ -1,6 +1,4 @@
-export const createHabit = function (data) {
-  const query = "CREATE (h:Habit {";
-};
+export const createHabit = function () {};
 export const updateHabitById = function () {
   // TODO:
 };

@@ -1,6 +1,7 @@
-export const NEO4J_URI = process.env.NEO4J_URI;
-export const NEO4J_USERNAME = process.env.NEO4J_USERNAME;
-export const NEO4J_PASSWORD = process.env.NEO4J_PASSWORD;
-
-export const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
-export const JWT_EXPIRATION = process.env.JWT_EXPIRATION;
+export const {
+  NEO4J_URI,
+  NEO4J_USERNAME,
+  NEO4J_PASSWORD,
+  JWT_SECRET_KEY,
+  JWT_EXPIRATION,
+} = process.env;
