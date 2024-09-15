@@ -7,10 +7,22 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Users {
+model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   username  String   
   name      String   
   password  String
+  habits  Habit[]  // One user can have many habits
+
+}
+
+model Habit {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
 }
