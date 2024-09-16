@@ -9,20 +9,39 @@ generator client {
 
 model User {
   id        Int      @id @default(autoincrement())
+  name      String
   email     String   @unique
-  username  String   
-  name      String   
   password  String
-  habits  Habit[]  // One user can have many habits
-
+  habits    Habit[]  // A user can have multiple habits
+  tasks     Task[]   // A user can have multiple tasks
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Habit {
   id          Int      @id @default(autoincrement())
   name        String
   description String?
+  frequency   String
+  userId      Int      // Foreign key to the User model
+  user        User     @relation(fields: [userId], references: [id])
+  tasks       Task[]   // A habit can have multiple tasks
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  userId      Int
+}
+
+model Task {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  userId      Int      // Foreign key to the User model
   user        User     @relation(fields: [userId], references: [id])
+  habitId     Int?     // Foreign key to the Habit model, optional
+  habit       Habit?   @relation(fields: [habitId], references: [id])
+  dueDate     DateTime?
+  completed   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  progress    Int       @default(0) // Progress percentage (0 to 100)
+  status      String    @default("in-progress") // Status of the task (e.g., "in-progress", "completed")
 }

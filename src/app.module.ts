@@ -8,6 +8,10 @@ import { HabitsModule } from './habits/habits.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { TasksModule } from './tasks/tasks.module';
+import { EmailService } from './email/email.service';
+import { LoggerModule } from './logger/logger.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -16,12 +20,15 @@ import { PassportModule } from '@nestjs/passport';
     HabitsModule,
     AuthModule,
     PassportModule,
+    ScheduleModule.forRoot(),
     JwtModule.register({
       secret: process.env.JWT_SECRET_KEY,
       signOptions: { expiresIn: '1h' },
     }),
+    TasksModule,
+    LoggerModule,
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [AppService, PrismaService, EmailService],
 })
 export class AppModule {}

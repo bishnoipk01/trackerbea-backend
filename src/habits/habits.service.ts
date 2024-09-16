@@ -11,13 +11,15 @@ export class HabitsService {
     return this.prisma.habit.create({
       data: {
         ...createHabitDto,
-        userId,
+        userId, // Associate the habit with the user
       },
     });
   }
 
-  async findAll() {
-    return this.prisma.habit.findMany();
+  async findHabitsByUser(userId: number) {
+    return this.prisma.habit.findMany({
+      where: { userId },
+    });
   }
 
   async findOne(id: number) {

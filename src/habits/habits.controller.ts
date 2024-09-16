@@ -18,16 +18,17 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 export class HabitsController {
   constructor(private readonly habitsService: HabitsService) {}
 
-  @UseGuards(JwtAuthGuard) // assuming you have auth implemented
+  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createHabitDto: CreateHabitDto, @Req() req: any) {
-    const userId = req.user.id; // assuming JWT contains user ID
+    const userId = req.user.userId;
     return this.habitsService.create(userId, createHabitDto);
   }
-
+  @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.habitsService.findAll();
+  getHabitsByUser(@Req() req: any) {
+    const userId = req.user.userId;
+    return this.habitsService.findHabitsByUser(+userId);
   }
 
   @Get(':id')
