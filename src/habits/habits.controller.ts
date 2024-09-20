@@ -45,4 +45,16 @@ export class HabitsController {
   remove(@Param('id') id: string) {
     return this.habitsService.remove(+id);
   }
+
+  // Endpoint to complete a habit and update streak
+  @Post(':habitId/complete')
+  completeHabit(@Param('habitId') habitId: string) {
+    return this.habitsService.completeHabit(+habitId);
+  }
+
+  // Optional: Endpoint to reset a habit's streak
+  @Post(':habitId/reset-streak')
+  resetStreak(@Param('habitId') habitId: string) {
+    return this.habitsService.resetStreak(+habitId);
+  }
 }

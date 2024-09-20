@@ -6,6 +6,9 @@ import 'winston-daily-rotate-file';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // Set global prefix for all routes
+  app.setGlobalPrefix('api/v1');
+
   // Enable global validation
   app.useGlobalPipes(
     new ValidationPipe({

@@ -12,6 +12,8 @@ import { TasksModule } from './tasks/tasks.module';
 import { EmailService } from './email/email.service';
 import { LoggerModule } from './logger/logger.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { UserProfileService } from './user-profile/user-profile.service';
+import { UserProfileController } from './user-profile/user-profile.controller';
 
 @Module({
   imports: [
@@ -28,7 +30,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     TasksModule,
     LoggerModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, PrismaService, EmailService],
+  controllers: [AppController, UserProfileController],
+  providers: [AppService, PrismaService, EmailService, UserProfileService],
 })
 export class AppModule {}
