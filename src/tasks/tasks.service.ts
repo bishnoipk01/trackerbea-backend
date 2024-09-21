@@ -1,10 +1,11 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskProgressDto } from './dto/update-task-progress';
 import { EmailService } from '../email/email.service';
 import { startOfDay, endOfDay } from 'date-fns'; // A utility library for working with dates
 import { Logger } from 'winston';
+import { UpdateTaskDto } from './dto/update-task.dto';
 
 @Injectable()
 export class TasksService {
@@ -17,6 +18,7 @@ export class TasksService {
   async createTask(userId: number, createTaskDto: CreateTaskDto) {
     this.logger.info(`Creating task for user ${userId}`);
     try {
+      console.log(createTaskDto);
       return this.prisma.task.create({
         data: {
           ...createTaskDto,
@@ -33,6 +35,32 @@ export class TasksService {
   async findTasksByUser(userId: number) {
     return this.prisma.task.findMany({
       where: { userId },
+    });
+  }
+
+  async findTasksByHabit(habitId: number) {
+    return this.prisma.task.findMany({
+      where: {
+        habitId: habitId,
+      },
+    });
+  }
+
+  async updateTask(taskId: number, updateTaskDto: UpdateTaskDto) {
+    const task = await this.prisma.task.findUnique({ where: { id: taskId } });
+    if (!task) {
+      throw new HttpException(
+        `No task found with ID ${taskId}.`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    return this.prisma.task.update({
+      where: { id: taskId },
+      data: {
+        ...updateTaskDto,
+        habitId: updateTaskDto.habitId || task.habitId, // Keep the current habitId if not updating
+      },
     });
   }
 
