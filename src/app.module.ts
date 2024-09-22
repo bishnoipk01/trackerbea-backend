@@ -14,6 +14,8 @@ import { LoggerModule } from './logger/logger.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { UserProfileService } from './user-profile/user-profile.service';
 import { UserProfileController } from './user-profile/user-profile.controller';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { LoggingInterceptor } from './utils/logging.interceptor';
 
 @Module({
   imports: [
@@ -31,6 +33,15 @@ import { UserProfileController } from './user-profile/user-profile.controller';
     LoggerModule,
   ],
   controllers: [AppController, UserProfileController],
-  providers: [AppService, PrismaService, EmailService, UserProfileService],
+  providers: [
+    AppService,
+    PrismaService,
+    EmailService,
+    UserProfileService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
+    },
+  ],
 })
 export class AppModule {}
