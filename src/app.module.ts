@@ -16,6 +16,7 @@ import { UserProfileService } from './user-profile/user-profile.service';
 import { UserProfileController } from './user-profile/user-profile.controller';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from './utils/logging.interceptor';
+import { UserProfileModule } from './user-profile/user-profile.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { LoggingInterceptor } from './utils/logging.interceptor';
     }),
     TasksModule,
     LoggerModule,
+    UserProfileModule,
   ],
   controllers: [AppController, UserProfileController],
   providers: [

@@ -8,9 +8,9 @@ import {
   Req,
 } from '@nestjs/common';
 import { UserProfileService } from './user-profile.service';
-import { CreateUserProfileDto } from 'src/users/dto/create-user-profile.dto';
-import { UpdateUserProfileDto } from 'src/users/dto/update-user-profile.dto';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { CreateUserProfileDto } from '../users/dto/create-user-profile.dto';
+import { UpdateUserProfileDto } from '../users/dto/update-user-profile.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('user-profile')
 export class UserProfileController {
