@@ -8,12 +8,9 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 export class TasksController {
   constructor(private readonly taskService: TasksService) {}
 
-  @Post(':userId')
-  createTask(
-    @Param('userId') userId: string,
-    @Body() createTaskDto: CreateTaskDto,
-  ) {
-    return this.taskService.createTask(+userId, createTaskDto);
+  @Post('')
+  createTask(@Body() createTaskDto: CreateTaskDto) {
+    return this.taskService.createTask(createTaskDto);
   }
 
   @Get('user/:userId')

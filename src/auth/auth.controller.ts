@@ -16,6 +16,8 @@ export class AuthController {
       throw new UnauthorizedException('Invalid credentials');
     }
 
+    console.log(process.env.NODE_ENV);
+
     // Generate JWT for the validated user
     const token = await this.authService.login(user);
     return { ...user, token };

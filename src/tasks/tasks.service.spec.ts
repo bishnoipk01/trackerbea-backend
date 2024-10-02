@@ -1,23 +1,31 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TasksService } from './tasks.service';
-import { PrismaService } from '../prisma/prisma.service'; // Import PrismaService
-import { EmailService } from '../email/email.service'; // Assuming EmailService is required
+import { PrismaService } from '../prisma/prisma.service'; // Mock PrismaService
+import { EmailService } from '../email/email.service'; // Mock EmailService
 
 describe('TasksService', () => {
   let service: TasksService;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let prismaService: PrismaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         TasksService,
-        PrismaService, // Provide PrismaService here
         {
-          provide: EmailService, // Mock EmailService if needed
+          provide: PrismaService, // Mock PrismaService
           useValue: {
-            /* mock methods if necessary */
+            task: {
+              create: jest
+                .fn()
+                .mockResolvedValue({ id: 1, title: 'Test Task' }), // Mock task.create
+              update: jest.fn(),
+              delete: jest.fn(),
+            },
           },
+        },
+        {
+          provide: EmailService,
+          useValue: {}, // Provide a mock for EmailService if needed
         },
       ],
     }).compile();
@@ -28,5 +36,19 @@ describe('TasksService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  it('should create a task', async () => {
+    const taskData = {
+      userId: 1,
+      title: 'Test Task',
+      description: 'A simple task',
+    };
+    const task = await service.createTask(taskData); // 1 = userId
+
+    expect(task).toEqual({ id: 1, title: 'Test Task' });
+    expect(prismaService.task.create).toHaveBeenCalledWith({
+      data: { ...taskData, userId: 1, habitId: null },
+    });
   });
 });

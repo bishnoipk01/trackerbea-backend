@@ -13,12 +13,10 @@ export class TasksService {
     private readonly emailService: EmailService,
   ) {}
 
-  async createTask(userId: number, createTaskDto: CreateTaskDto) {
-    console.log(createTaskDto);
+  async createTask(createTaskDto: CreateTaskDto) {
     return this.prisma.task.create({
       data: {
         ...createTaskDto,
-        userId, // Associate the task with the user
         habitId: createTaskDto.habitId || null, // Optional habit linkage
       },
     });
@@ -78,7 +76,6 @@ export class TasksService {
       where: { id: taskId },
       include: { user: true },
     });
-    console.log(task);
 
     if (
       task &&

@@ -13,7 +13,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
     UsersModule,
     PassportModule,
     JwtModule.register({
-      secret: process.env.JWT_SECRET_KEY, // Secret key for signing the token
+      secret: process.env.JWT_SECRET_KEY || 'default-secret-key', // Secret key for signing the token
       signOptions: { expiresIn: '1h' }, // Token expiry time
     }),
   ],

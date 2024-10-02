@@ -1,10 +1,20 @@
-// test/setup.ts
-import { PrismaService } from '../src/prisma/prisma.service';
+import { execSync } from 'child_process';
+import * as dotenv from 'dotenv';
+import { PrismaClient } from '@prisma/client';
 
-// Manually create an instance of PrismaService
-const prisma = new PrismaService();
+dotenv.config({ path: '.env.test' }); // Load the test environment variables
 
-export default async () => {
-  // Connect to the database
-  await prisma.$connect();
+const prisma = new PrismaClient();
+
+module.exports = async () => {
+  try {
+    // Run migrations to ensure the schema is up to date
+    execSync('npx prisma migrate deploy', { stdio: 'inherit' });
+
+    // Close the Prisma connection
+    await prisma.$disconnect();
+  } catch (error) {
+    console.error('Error setting up test database:', error);
+    process.exit(1); // Exit if setup fails
+  }
 };
