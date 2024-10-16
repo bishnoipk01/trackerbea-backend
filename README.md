@@ -10,6 +10,7 @@
 * **Backend:** NestJS
 * **Database:** PostgreSQL
 * **Data Access:** Prisma ORM
+* **Testing:** Jest
 
 ### Getting Started
 1. **Clone the repository:**
@@ -37,9 +38,6 @@ npx prisma generate
 npm run start:dev
 ```
 ### API Endpoints
-* **POST /auth/signup:** Sign up
-* **POST /auth/login:** Log in
-* **GET /habits:** List habits
-* **POST /habits:** Create habit
-* **GET /tasks:** List tasks
-* **POST /tasks:** Create task
+Get detailed API documentation using Swagger
+
+**Coming soon...**
