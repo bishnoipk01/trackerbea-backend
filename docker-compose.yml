@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres-test-db
+    environment:
+      POSTGRES_USER: test_user # PostgreSQL username
+      POSTGRES_PASSWORD: test_password # PostgreSQL password
+      POSTGRES_DB: test_db # Database name
+    ports:
+      - '5432:5432' # Expose PostgreSQL on localhost:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persistent volume for database data
+    networks:
+      - test_network # Custom network for isolation
+
+volumes:
+  postgres_data: # Volume for data persistence
+
+networks:
+  test_network: # Define a custom network
+    driver: bridge
