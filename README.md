@@ -14,6 +14,7 @@
 - **Backend:** NestJS
 - **Database:** PostgreSQL
 - **Data Access:** Prisma ORM
+- **Testing:** Jest
 
 ### Getting Started
 
@@ -45,6 +46,6 @@ npx prisma generate
 npm run start:dev
 ```
 
-### API Documentation
+### API Endpoints
 
-API documentation is created using swagger. You can find it at http://localhost:3000/api/docs after running the application locally
+Get detailed API documentation using Swagger at /api/docs
